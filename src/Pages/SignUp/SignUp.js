@@ -16,7 +16,30 @@ const SignUp = () => {
         createUser(email, password)
         .then(result => {
             const user = result.user;
-            console.log(user);
+            // console.log(user);
+
+            const currentUser ={
+                email: user.email
+            }
+            // console.log(currentUser);
+
+            // get jwt token
+            fetch('https://genius-car-server-five-sandy.vercel.app/jwt',{
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(currentUser)
+            })
+            .then(res =>res.json())
+            .then( data =>{
+                console.log(data);
+                // local storage is the easiest but not the best place to storage
+                localStorage.setItem('genius-token', data.token);   
+                // navigate(from, {replace: true});
+                // form.reset();
+            });
+
             form.reset();
         })
         .catch(err => console.error(err));
